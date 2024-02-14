@@ -1,0 +1,207 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<style>
+    .chart-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+    }
+    .chart-col {
+        flex: 0 0 calc(50% - 20px);
+        margin-right: 15px;
+    }
+    .chart {
+        width: 100%;
+        height: auto;
+    }
+    .container-wrapper {
+        display: flex;
+    }
+    .left-container {
+        flex: 2;
+        padding: 15px;
+        background-color: #f2f2f2;
+        text-align: center;
+    }
+    .right-container {
+        margin-left: 20px;
+        flex: 5;
+        padding: 10px;
+    }
+    
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$.ajax({
+    url: url,
+    type: "GET",
+    dataType: "json",
+    success: (data) => {
+      console.log(data);
+    },
+    error: (error) => {
+      console.log(error);
+    }
+  });</script>
+<div class="container-wrapper">
+    <div class="left-container">
+        <div style="text-align: center;">
+            <h2>Packets</h2>
+            <p>{{PACKET_COUNT_s|last}}</p>
+            <h2>Time</h2>
+            <p>{{TIME_s|last}}</p>
+            <h2>Flight Software State</h2>
+            <p>{state}</p>
+            <button id="startButton">Toggle Plotting</button>
+        </div>
+    </div>
+    
+    <div class="right-container">
+        <div class="chart-row">
+            <div class="chart-col">
+                <canvas id="altitudeChart" class="chart"></canvas>
+            </div>
+            <div class="chart-col">
+                <canvas id="tempChart" class="chart"></canvas>
+            </div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-col">
+                <canvas id="accelChart" class="chart"></canvas>
+            </div>
+            <div class="chart-col">
+                <canvas id="voltageChart" class="chart"></canvas>
+            </div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-col">
+                <canvas id="gnssChart" class="chart"></canvas>
+            </div>
+            <div class="chart-col">
+                <canvas id="gyroChart" class="chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>  
+    document.addEventListener('DOMContentLoaded', function () {
+        var altitudeCtx = document.getElementById('altitudeChart').getContext('2d');
+        var altitudeChart = new Chart(altitudeCtx, {
+            type: 'line',
+            data: {
+                labels: {{ TIME_s|safe }},
+                datasets: [{
+                    label: 'Altitude (m)',
+                    data: {{ ALTITUDE_s|safe }},
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+        });
+
+        var tempCtx = document.getElementById('tempChart').getContext('2d');
+        var tempChart = new Chart(tempCtx, {
+            type: 'line',
+            data: {
+                labels: {{ TIME_s|safe }},
+                datasets: [{
+                    label: 'Temperature (C)',
+                    data: {{ TEMP_s|safe }},
+                    borderColor: 'green',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+        });
+
+        var accelCtx = document.getElementById('accelChart').getContext('2d');
+        var accelChart = new Chart(accelCtx, {
+            type: 'line',
+            data: {
+                labels: {{ TIME_s|safe }},
+                datasets: [{
+                    label: 'Accelerometer X',
+                    data: {{ ACCEL_X_s|safe }},
+                    borderColor: 'red',
+                    borderWidth: 1,
+                    fill: false
+                },{
+                    label: 'Accelerometer Y',
+                    data: {{ ACCEL_Y_s|safe }},
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                    fill: false
+                },{
+                    label: 'Accelerometer Z',
+                    data: {{ ACCEL_Z_s|safe }},
+                    borderColor: 'green',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+        });
+
+        var voltageCtx = document.getElementById('voltageChart').getContext('2d');
+        var voltageChart = new Chart(voltageCtx, {
+            type: 'line',
+            data: {
+                labels: {{ TIME_s|safe }},
+                datasets: [{
+                    label: 'Voltage',
+                    data: {{ VOLTAGE_s|safe }},
+                    borderColor: 'purple',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+        });
+
+        var gnssCtx = document.getElementById('gnssChart').getContext('2d');
+        var gnssChart = new Chart(gnssCtx, {
+            type: 'line',
+            data: {
+                labels: {{ TIME_s|safe }},
+                datasets: [{
+                    label: 'GNSS Satellites',
+                    data: {{ GNSS_SATS_s|safe }},
+                    borderColor: 'orange',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+        });
+
+        var gyroCtx = document.getElementById('gyroChart').getContext('2d');
+        var gyroChart = new Chart(gyroCtx, {
+            type: 'line',
+            data: {
+                labels: {{ TIME_s|safe }},
+                datasets: [{
+                    label: 'Gyroscope X',
+                    data: {{ GYRO_X_s|safe }},
+                    borderColor: 'brown',
+                    borderWidth: 1,
+                    fill: false
+                },{
+                    label: 'Gyroscope Y',
+                    data: {{ GYRO_Y_s|safe }},
+                    borderColor: 'black',
+                    borderWidth: 1,
+                    fill: false
+                },{
+                    label: 'Gyroscope Z',
+                    data: {{ GYRO_Z_s|safe }},
+                    borderColor: 'gray',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+        });
+    });
+</script>
+
+{% endblock %}
