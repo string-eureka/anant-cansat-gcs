@@ -1,37 +1,16 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satellite Ground Control System</title>
+    <title>Anant Ground Console Station</title>
     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            /* background-image: url('{% static "core/stars.jpg" %}'); */
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-        .navbar {
-            background-color: #000000be; 
-        }
-
-        .navbar-brand img {
-            height: 45px; 
-            width: auto;
-            margin-right: 10px;
-        }
-
-        .navbar-text {
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
@@ -39,7 +18,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
         <a class="navbar-brand" href="#"><img src="{% static 'core/logo.png' %}" alt="Logo"></a>
-        <span class="navbar-text">Team Anant CanSAT Ground Control System</span>
+        <span class="navbar-text">Team Anant CanSAT Ground Console Station</span>
     </div>
 </nav>
 

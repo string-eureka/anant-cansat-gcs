@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<div class="container-wrapper">
+    <div class="left-container">
+        <div style="text-align: center;">
+            <h2>Packets</h2>
+            <p>{{PACKET_COUNT_s|last}}</p>
+            <h2>Time</h2>
+            <p>{{TIME_s|last}}</p>
+            <h2>Flight Software State</h2>
+            <p>{state}</p>
+            <button id="startButton" onclick="location.href='{% url 'plot' %}'">Toggle Plotting</button>
+        </div>
+    </div>
+    
+    <div class="right-container">
+        <div class="chart-row">
+            <div class="chart-col">
+                <canvas id="altitudeChart" class="chart"></canvas>
+            </div>
+            <div class="chart-col">
+                <canvas id="tempChart" class="chart"></canvas>
+            </div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-col">
+                <canvas id="accelChart" class="chart"></canvas>
+            </div>
+            <div class="chart-col">
+                <canvas id="voltageChart" class="chart"></canvas>
+            </div>
+        </div>
+        <div class="chart-row">
+            <div class="chart-col">
+                <canvas id="gnssChart" class="chart"></canvas>
+            </div>
+            <div class="chart-col">
+                <canvas id="gyroChart" class="chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,49 +1,10 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block content %}
 
-<style>
-    .chart-row {
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 15px;
-    }
-    .chart-col {
-        flex: 0 0 calc(50% - 20px);
-        margin-right: 15px;
-    }
-    .chart {
-        width: 100%;
-        height: auto;
-    }
-    .container-wrapper {
-        display: flex;
-    }
-    .left-container {
-        flex: 2;
-        padding: 15px;
-        background-color: #f2f2f2;
-        text-align: center;
-    }
-    .right-container {
-        margin-left: 20px;
-        flex: 5;
-        padding: 10px;
-    }
-    
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-$.ajax({
-    url: url,
-    type: "GET",
-    dataType: "json",
-    success: (data) => {
-      console.log(data);
-    },
-    error: (error) => {
-      console.log(error);
-    }
-  });</script>
+<p id="refresh-timer"></p>
+<script src = "{% static 'core/refresh.js' %}"></script>
+
 <div class="container-wrapper">
     <div class="left-container">
         <div style="text-align: center;">
@@ -59,7 +20,8 @@ $.ajax({
     
     <div class="right-container">
         <div class="chart-row">
-            <div class="chart-col">
+            <div class="chart-col ">
+                <div class="chartAreaWrappers"></div>
                 <canvas id="altitudeChart" class="chart"></canvas>
             </div>
             <div class="chart-col">
@@ -90,7 +52,12 @@ $.ajax({
     document.addEventListener('DOMContentLoaded', function () {
         var altitudeCtx = document.getElementById('altitudeChart').getContext('2d');
         var altitudeChart = new Chart(altitudeCtx, {
-            type: 'line',
+                        type: 'line',
+            options: {
+                animation: {
+                    duration: 0
+            }
+        },
             data: {
                 labels: {{ TIME_s|safe }},
                 datasets: [{
@@ -105,7 +72,12 @@ $.ajax({
 
         var tempCtx = document.getElementById('tempChart').getContext('2d');
         var tempChart = new Chart(tempCtx, {
-            type: 'line',
+                        type: 'line',
+            options: {
+                animation: {
+                    duration: 0
+            }
+        },
             data: {
                 labels: {{ TIME_s|safe }},
                 datasets: [{
@@ -120,7 +92,12 @@ $.ajax({
 
         var accelCtx = document.getElementById('accelChart').getContext('2d');
         var accelChart = new Chart(accelCtx, {
-            type: 'line',
+                        type: 'line',
+            options: {
+                animation: {
+                    duration: 0
+            }
+        },
             data: {
                 labels: {{ TIME_s|safe }},
                 datasets: [{
@@ -147,7 +124,12 @@ $.ajax({
 
         var voltageCtx = document.getElementById('voltageChart').getContext('2d');
         var voltageChart = new Chart(voltageCtx, {
-            type: 'line',
+                        type: 'line',
+            options: {
+                animation: {
+                    duration: 0
+            }
+        },
             data: {
                 labels: {{ TIME_s|safe }},
                 datasets: [{
@@ -162,7 +144,12 @@ $.ajax({
 
         var gnssCtx = document.getElementById('gnssChart').getContext('2d');
         var gnssChart = new Chart(gnssCtx, {
-            type: 'line',
+                        type: 'line',
+            options: {
+                animation: {
+                    duration: 0
+            }
+        },
             data: {
                 labels: {{ TIME_s|safe }},
                 datasets: [{
@@ -177,7 +164,12 @@ $.ajax({
 
         var gyroCtx = document.getElementById('gyroChart').getContext('2d');
         var gyroChart = new Chart(gyroCtx, {
-            type: 'line',
+                        type: 'line',
+            options: {
+                animation: {
+                    duration: 0
+            }
+        },
             data: {
                 labels: {{ TIME_s|safe }},
                 datasets: [{

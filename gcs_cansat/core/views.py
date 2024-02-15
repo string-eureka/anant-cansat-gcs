@@ -4,7 +4,10 @@ from subprocess import call
 
 def graphs():
 
-    file = open('../data.txt','r')
+    try:
+        file = open('../data.txt','r')
+    except:
+        file = open('../backup.txt','r')
     TEAM_ID_s, TIME_s, PACKET_COUNT_s, ALTITUDE_s, TEMP_s, VOLTAGE_s, GNSS_SATS_s, ACCEL_X_s, ACCEL_Y_s, ACCEL_Z_s, GYRO_X_s, GYRO_Y_s, GYRO_Z_s = [[] for _ in range (13)]
     
     params = {
@@ -37,8 +40,10 @@ def graphs():
 
 def plot(request):
     context = graphs()
-    exec('')
     return render(request, 'core/plot.html', context)
 
-# call(["../main.ino;"])
+def toggle(request):
+    return render(request,'core/toggle.html')
+
+
 
