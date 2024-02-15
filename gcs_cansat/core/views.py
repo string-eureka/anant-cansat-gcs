@@ -1,49 +1,23 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-from subprocess import call
+from .graphs import processing, main_plot_data,map_plot_data,display_data
 
-def graphs():
+def display(request):
 
-    try:
-        file = open('../data.txt','r')
-    except:
-        file = open('../backup.txt','r')
-    TEAM_ID_s, TIME_s, PACKET_COUNT_s, ALTITUDE_s, TEMP_s, VOLTAGE_s, GNSS_SATS_s, ACCEL_X_s, ACCEL_Y_s, ACCEL_Z_s, GYRO_X_s, GYRO_Y_s, GYRO_Z_s = [[] for _ in range (13)]
+    context = display_data()
+    return render(request,'core/display.html',context)
+
+def main_plot(request):
+
+    context = main_plot_data()
+    print(context)
+    return render(request, 'core/main_plot.html', context)
+
+def map_plot(request):
+
+    context = map_plot_data()
+    return render(request,'core/map_plot.html',context)
     
-    params = {
-        "TEAM_ID_s": TEAM_ID_s,
-        "TIME_s": TIME_s,
-        "PACKET_COUNT_s": PACKET_COUNT_s,
-        "ALTITUDE_s": ALTITUDE_s,
-        "TEMP_s": TEMP_s,
-        "VOLTAGE_s": VOLTAGE_s,
-        "GNSS_SATS_s": GNSS_SATS_s,
-        "ACCEL_X_s": ACCEL_X_s,
-        "ACCEL_Y_s": ACCEL_Y_s,
-        "ACCEL_Z_s": ACCEL_Z_s,
-        "GYRO_X_s": GYRO_X_s,
-        "GYRO_Y_s": GYRO_Y_s,
-        "GYRO_Z_s": GYRO_Z_s
-    }
 
-    for line in file:
-        if len(line) > 1:
-            values = line.split(',')
-            for i,j in zip(params,values):
-                    if not float(j) % 1:
-                        params[i].append(int(j))
-                    else:
-                        params[i].append(float(j))
-                    
-    file.close()
-    return params
-
-def plot(request):
-    context = graphs()
-    return render(request, 'core/plot.html', context)
-
-def toggle(request):
-    return render(request,'core/toggle.html')
 
 
 

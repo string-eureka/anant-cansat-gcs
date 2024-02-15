@@ -9,12 +9,13 @@
     <div class="left-container">
         <div style="text-align: center;">
             <h2>Packets</h2>
-            <p>{{PACKET_COUNT_s|last}}</p>
+            <p>{{PKT_CNT}}</p>
             <h2>Time</h2>
-            <p>{{TIME_s|last}}</p>
-            <h2>Flight Software State</h2>
-            <p>{state}</p>
-            <button id="startButton">Toggle Plotting</button>
+            <p>{{T_TOTAL}}</p>
+            <h2>Flight  State</h2>
+            <p>{{CUR_STATE}}</p>
+        
+            <button id="startButton" onclick="location.href='{% url 'main-plot' %}'">Toggle Plotting</button>
         </div>
     </div>
     
@@ -40,9 +41,7 @@
             <div class="chart-col">
                 <canvas id="gnssChart" class="chart"></canvas>
             </div>
-            <div class="chart-col">
-                <canvas id="gyroChart" class="chart"></canvas>
-            </div>
+
         </div>
     </div>
 </div>
@@ -59,10 +58,10 @@
             }
         },
             data: {
-                labels: {{ TIME_s|safe }},
+                labels: {{ T_TOTAL|safe }},
                 datasets: [{
                     label: 'Altitude (m)',
-                    data: {{ ALTITUDE_s|safe }},
+                    data: {{ GAS_ALT|safe }},
                     borderColor: 'blue',
                     borderWidth: 1,
                     fill: false
@@ -79,10 +78,10 @@
             }
         },
             data: {
-                labels: {{ TIME_s|safe }},
+                labels: {{ T_TOTAL|safe }},
                 datasets: [{
                     label: 'Temperature (C)',
-                    data: {{ TEMP_s|safe }},
+                    data: {{ GAS_TEMP|safe }},
                     borderColor: 'green',
                     borderWidth: 1,
                     fill: false
@@ -99,22 +98,22 @@
             }
         },
             data: {
-                labels: {{ TIME_s|safe }},
+                labels: {{ T_TOTAL|safe }},
                 datasets: [{
                     label: 'Accelerometer X',
-                    data: {{ ACCEL_X_s|safe }},
+                    data: {{ IACC_X|safe }},
                     borderColor: 'red',
                     borderWidth: 1,
                     fill: false
                 },{
                     label: 'Accelerometer Y',
-                    data: {{ ACCEL_Y_s|safe }},
+                    data: {{ IACC_Y|safe }},
                     borderColor: 'blue',
                     borderWidth: 1,
                     fill: false
                 },{
                     label: 'Accelerometer Z',
-                    data: {{ ACCEL_Z_s|safe }},
+                    data: {{ IACC_Z|safe }},
                     borderColor: 'green',
                     borderWidth: 1,
                     fill: false
@@ -131,10 +130,10 @@
             }
         },
             data: {
-                labels: {{ TIME_s|safe }},
+                labels: {{ T_TOTAL|safe }},
                 datasets: [{
                     label: 'Voltage',
-                    data: {{ VOLTAGE_s|safe }},
+                    data: {{ GAS_PRS|safe }},
                     borderColor: 'purple',
                     borderWidth: 1,
                     fill: false
@@ -151,43 +150,11 @@
             }
         },
             data: {
-                labels: {{ TIME_s|safe }},
+                labels: {{ T_TOTAL|safe }},
                 datasets: [{
                     label: 'GNSS Satellites',
-                    data: {{ GNSS_SATS_s|safe }},
+                    data: {{ IMAG_Z|safe }},
                     borderColor: 'orange',
-                    borderWidth: 1,
-                    fill: false
-                }]
-            }
-        });
-
-        var gyroCtx = document.getElementById('gyroChart').getContext('2d');
-        var gyroChart = new Chart(gyroCtx, {
-                        type: 'line',
-            options: {
-                animation: {
-                    duration: 0
-            }
-        },
-            data: {
-                labels: {{ TIME_s|safe }},
-                datasets: [{
-                    label: 'Gyroscope X',
-                    data: {{ GYRO_X_s|safe }},
-                    borderColor: 'brown',
-                    borderWidth: 1,
-                    fill: false
-                },{
-                    label: 'Gyroscope Y',
-                    data: {{ GYRO_Y_s|safe }},
-                    borderColor: 'black',
-                    borderWidth: 1,
-                    fill: false
-                },{
-                    label: 'Gyroscope Z',
-                    data: {{ GYRO_Z_s|safe }},
-                    borderColor: 'gray',
                     borderWidth: 1,
                     fill: false
                 }]

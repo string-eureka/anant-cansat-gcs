@@ -2,6 +2,7 @@ from django.urls import path
 from . import views as core_views
 
 urlpatterns=[
-    path('plot/', core_views.plot, name = 'plot'),
-    path('',core_views.toggle, name = 'toggle'),
+    path('',core_views.display, name = 'display'),
+    path('plot/', core_views.main_plot, name = 'main-plot'),
+    path('map-plot/',core_views.map_plot_data, name = 'map-plot'),
 ]

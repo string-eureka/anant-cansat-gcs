@@ -5,12 +5,13 @@
     <div class="left-container">
         <div style="text-align: center;">
             <h2>Packets</h2>
-            <p>{{PACKET_COUNT_s|last}}</p>
+            <p>{{PKT_CNT}}</p>
             <h2>Time</h2>
-            <p>{{TIME_s|last}}</p>
-            <h2>Flight Software State</h2>
-            <p>{state}</p>
-            <button id="startButton" onclick="location.href='{% url 'plot' %}'">Toggle Plotting</button>
+            <p>{{T_TOTAL}}</p>
+            <h2>Flight  State</h2>
+            <p>{{CUR_STATE}}</p>
+        
+            <button id="startButton" onclick="location.href='{% url 'main-plot' %}'">Toggle Plotting</button>
         </div>
     </div>
     
