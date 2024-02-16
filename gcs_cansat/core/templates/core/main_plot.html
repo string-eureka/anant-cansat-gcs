@@ -1,101 +1,26 @@
 {% extends 'core/base.html' %}
-{% load static %}
 {% block content %}
-
-<p id="refresh-timer"></p>
-<script src = "{% static 'core/refresh.js' %}"></script>
-
-<div class="container-wrapper">
-    <div class="left-container">
-        <table class="table table-borderless">
-            <tbody>
-                <tr>
-                    <td>Team ID</td>
-                    <td><span class="rounded-box">026</span></td>
-                </tr>
-                <tr>
-                    <td>Time Elapsed</td>
-                    <td><span class="rounded-box">{{T_TOTAL|last}}</span></td>
-                </tr>
-                <tr>
-                    <td>Packet Count</td>
-                    <td><span class="rounded-box">{{PKT_CNT|last}}</span></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <button id="startButton" class="btn btn-primary" onclick="location.href='{% url 'main-plot' %}'">Start Plotting</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Boot Mode</td>
-                    <td>{% if CUR_STATE|last > 0 %}{% if CUR_STATE|last > 0 %}<span class="dot">{% endif %}</span>{% endif %}</span></td>
-                </tr>
-                <tr>
-                    <td>Launchpad Mode</td>
-                    <td>{% if CUR_STATE|last > 1 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-                <tr>
-                    <td>Test Mode</td>
-                    <td>{% if CUR_STATE|last > 2 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-                <tr>
-                    <td>Ascent Mode</td>
-                    <td>{% if CUR_STATE|last > 3 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-                <tr>
-                    <td>Deployment Mode</td>
-                    <td>{% if CUR_STATE|last > 4 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-                <tr>
-                    <td>Descent Mode</td>
-                    <td>{% if CUR_STATE|last > 5 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-                <tr>
-                    <td>Aerobrake Mode</td>
-                    <td>{% if CUR_STATE|last > 6 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-                <tr>
-                    <td>Impact Mode</td>
-                    <td>{% if CUR_STATE|last > 7 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-                <tr>
-                    <td>Touchdown Mode</td>
-                    <td>{% if CUR_STATE|last > 8 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-                <tr>
-                    <td>Unknown Mode</td>
-                    <td>{% if CUR_STATE|last == 0 %}<span class="dot">{% endif %}</span></span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-     
-    <div class="right-container">
-        <div class="big-chart-row">
-            <div class="big-chart-col">
-                <canvas id="accelChart" class="big-chart"></canvas>
-            </div>
-        </div>
-        <div class="chart-row">
-            <div class="chart-col ">
-                <canvas id="altitudeChart" class="chart"></canvas>
-            </div>
-            <div class="chart-col">
-                <canvas id="tempChart" class="chart"></canvas>
-            </div>
-        </div>
-        <div class="chart-row">
-            <div class="chart-col">
-                <canvas id="gnssChart" class="chart"></canvas>
-            </div>
-            <div class="chart-col">
-                <canvas id="voltageChart" class="chart"></canvas>
-            </div>
+    <div class="row">
+        <div class="col-md-12">
+            <canvas id="altitudeChart" class="line-chart"></canvas>
         </div>
     </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="accelChart" class="line-chart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="tempChart" class="line-chart"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="imagChart" class="line-chart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="pressureChart" class="line-chart"></canvas>
+        </div>
+    </div>
 
 <script>  
     document.addEventListener('DOMContentLoaded', function () {
@@ -171,8 +96,8 @@
             }
         });
 
-        var voltageCtx = document.getElementById('voltageChart').getContext('2d');
-        var voltageChart = new Chart(voltageCtx, {
+        var pressureCtx = document.getElementById('pressureChart').getContext('2d');
+        var pressureChart = new Chart(pressureCtx, {
                         type: 'line',
             options: {
                 animation: {
@@ -182,7 +107,7 @@
             data: {
                 labels: {{ T_TOTAL|safe }},
                 datasets: [{
-                    label: 'Voltage',
+                    label: 'Pressure',
                     data: {{ GAS_PRS|safe }},
                     borderColor: 'purple',
                     borderWidth: 1,
@@ -191,8 +116,8 @@
             }
         });
 
-        var gnssCtx = document.getElementById('gnssChart').getContext('2d');
-        var gnssChart = new Chart(gnssCtx, {
+        var imagCtx = document.getElementById('imagChart').getContext('2d');
+        var imagChart = new Chart(imagCtx, {
                         type: 'line',
             options: {
                 animation: {
@@ -202,7 +127,7 @@
             data: {
                 labels: {{ T_TOTAL|safe }},
                 datasets: [{
-                    label: 'GNSS Satellites',
+                    label: 'Magnetic Inertia (Z)',
                     data: {{ IMAG_Z|safe }},
                     borderColor: 'orange',
                     borderWidth: 1,
@@ -210,6 +135,39 @@
                 }]
             }
         });
+    setInterval(function(){
+        jQuery.getJSON("/main-api/", function(response, status)
+        {
+            const gap = Object.values(response)[0].length - altitudeChart.data.labels.length
+            if (gap){
+                altitudeChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                altitudeChart.data.datasets[0].data.push(response.GAS_ALT.slice(-gap));
+                altitudeChart.update();
+
+                tempChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                tempChart.data.datasets[0].data.push(response.GAS_TEMP.slice(-gap));
+                tempChart.update();
+
+                imagChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                imagChart.data.datasets[0].data.push(response.IMAG_Z.slice(-gap));
+                imagChart.update();
+
+                pressureChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                pressureChart.data.datasets[0].data.push(response.GAS_PRS.slice(-gap));
+                pressureChart.update();
+
+                accelChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                accelChart.data.datasets[0].data.push(response.IACC_X.slice(-gap));
+                accelChart.data.datasets[1].data.push(response.IACC_Y.slice(-gap));
+                accelChart.data.datasets[2].data.push(response.IACC_Z.slice(-gap));
+
+                accelChart.update();
+
+
+            }
+            
+        });
+        }, 250);
     });
 </script>
 

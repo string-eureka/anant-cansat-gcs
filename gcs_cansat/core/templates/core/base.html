@@ -1,36 +1,124 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Anant Ground Console Station</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'core/styles.css' %}">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <style>
+        body {
+            background-color: #000;
+            color: #00ff00;
+        }
+
+        .navbar {
+            background-color: #00ff00;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .left-container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .right-container {
+            flex: 3;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            color: #00ff00;
+            margin-bottom: 20px;
+        }
+
+        table td {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .rounded-box {
+            border-radius: 5px;
+            background-color: #500658fb;
+            padding: 5px 10px;
+        }
+
+        #startButton {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-light justify-content-center">
+        <a class="navbar-brand " href="#">Team Anant CanSAT Ground Console Station</a>
+    </nav>
+    
     <div class="container">
-        <a class="navbar-brand" href="#"><img src="{% static 'core/logo.png' %}" alt="Logo"></a>
-        <span class="navbar-text">Team Anant CanSAT Ground Console Station</span>
+        <div class="left-container">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Team ID</td>
+                        <td><span class="rounded-box">026</span></td>
+                    </tr>
+                    <tr>
+                        <td>Time Elapsed</td>
+                        <td><span class="rounded-box">{{T_TOTAL|last}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Packet Count</td>
+                        <td><span class="rounded-box">{{PKT_CNT|last}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Operating Mode</td>
+                        <td><span class="rounded-box">{{CUR_STATE|last}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Latitude</td>
+                        <td><span class="rounded-box">{{GPS_LAT|last}} ° N </span></td>
+                    </tr>
+                    <tr>
+                        <td>Longitude</td>
+                        <td><span class="rounded-box">{{GPS_LNG|last}} ° E</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <button id="startButton" class="btn btn-primary"
+                                onclick="location.href='{% url 'main-plot' %}'">Start Plotting</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <img src="{% static 'core/logo.png' %}" alt="Team Anant Logo" style="width: 100%;">
+        </div>
+
+        <div class="right-container">
+            {% block content %}{% endblock %}
+        </div>
     </div>
-</nav>
 
-<div class="container mt-5">
-    {% block content %}{% endblock %}
-</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
-
-

@@ -29,8 +29,8 @@ def processing():
 
     try:
         file = open('../backup.txt','r')
-    except:
-        file = open('../backup.txt','r')
+    except Exception as e:
+        print(e)
 
     TEAM_ID, PKT_CNT, T_HOUR, T_MIN, T_SEC, GAS_ALT, CUR_STATE, ESP_TIME, IACC_Z, GPS_STATUS, GPS_LAT, GPS_LNG, GPS_HR, GPS_MIN, GPS_SEC, IACC_X, IACC_Y, IMAG_X, IMAG_Y, IMAG_Z, GAS_PRS, GAS_TEMP, GPS_ALT, CHECKSUM = [[] for _ in range (24)]  
 
@@ -87,30 +87,20 @@ def processing():
 def main_plot_data():
 
     params = processing()
+
     if (len(params['TEAM_ID'])):
-        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] for i in range (len(params['TEAM_ID']))]
+
+        T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
+        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST for i in range (len(params['TEAM_ID']))]
+        GPS_LAT = [str(params["GPS_LAT"][i])[:4] for i in range(len(params['TEAM_ID']))]
+        GPS_LNG = [str(params["GPS_LNG"][i])[:4] for i in range(len(params['TEAM_ID']))]
     else:
-        T_TOTAL = 0
-
-    modes = {
-        "Boot": 1,
-        "Launchpad": 2,
-        "Test": 3,
-        "Ascent": 4,
-        "Deployment": 5,
-        "Descent": 6,
-        "Aerobrake": 7,
-        "Impact": 8,
-        "Touchdown": 9,
-        "Unknown": 0
-    }
-
-    params["CUR_STATE"] = [modes[i.strip()] for i in params["CUR_STATE"]]
-
+        T_TOTAL = [0]
+    
     data = {
+        "T_TOTAL" : T_TOTAL,
         "PKT_CNT" : params["PKT_CNT"],
         "CUR_STATE" : params["CUR_STATE"],
-        "T_TOTAL" : T_TOTAL,
         "IACC_Z" : params["IACC_Z"],
         "IACC_Y" : params["IACC_Y"],
         "IACC_X" : params["IACC_X"],
@@ -118,6 +108,8 @@ def main_plot_data():
         "IMAG_Z" : params["IMAG_Z"],
         "GAS_PRS" : params["GAS_PRS"],
         "GAS_TEMP" : params["GAS_TEMP"],
+        "GPS_LAT" : GPS_LAT,
+        "GPS_LNG" : GPS_LNG,
     }
 
     return data
@@ -125,10 +117,14 @@ def main_plot_data():
 def map_plot_data():
 
     params = processing()
+
     if (len(params['TEAM_ID'])):
-        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] for i in range (len(params['TEAM_ID']))]
+
+        T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
+        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST for i in range (len(params['TEAM_ID']))]
     else:
-        T_TOTAL = 0
+        
+        T_TOTAL = [0]
     data = {
         "T_TOTAL" : T_TOTAL,
         "GPS_LAT" : params["GPS_LAT"],
@@ -140,16 +136,27 @@ def map_plot_data():
 def display_data():
 
     params = processing()
-    try:
-        T_TOTAL = ":".join([str(params["T_HOUR"][-1]), str(params["T_MIN"][-1]), str(params["T_SEC"][-1])])
-    except:
-        T_TOTAL = '00:00:00'
+    if (len(params['TEAM_ID'])):
+
+        T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
+        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST for i in range (len(params['TEAM_ID']))]
+    
+    else:
+        T_TOTAL = [0]
+
+    # if (len(params['TEAM_ID'])):
+
+    #     T_DISPLAY = ":".join([str(params["T_HOUR"][-1]), str(params["T_MIN"][-1]), str(params["T_SEC"][-1])])
+    # else:
+    #     T_DISPLAY = '00:00:00'
 
     data = {
         "TEAM_ID" : params["TEAM_ID"],
         "PKT_CNT" : params["PKT_CNT"],
         "T_TOTAL" : T_TOTAL,
         "CUR_STATE" : params["CUR_STATE"],
+        "GPS_LAT" : params["GPS_LAT"],
+        "GPS_LNG" : params ["GPS_LNG"],
         "GPS_STATUS" : params["GPS_STATUS"],
     }
 
