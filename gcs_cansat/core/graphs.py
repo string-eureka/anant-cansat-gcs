@@ -87,9 +87,29 @@ def processing():
 def main_plot_data():
 
     params = processing()
-    T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] for i in range (len(params['TEAM_ID']))]
+    if (len(params['TEAM_ID'])):
+        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] for i in range (len(params['TEAM_ID']))]
+    else:
+        T_TOTAL = 0
+
+    modes = {
+        "Boot": 1,
+        "Launchpad": 2,
+        "Test": 3,
+        "Ascent": 4,
+        "Deployment": 5,
+        "Descent": 6,
+        "Aerobrake": 7,
+        "Impact": 8,
+        "Touchdown": 9,
+        "Unknown": 0
+    }
+
+    params["CUR_STATE"] = [modes[i.strip()] for i in params["CUR_STATE"]]
 
     data = {
+        "PKT_CNT" : params["PKT_CNT"],
+        "CUR_STATE" : params["CUR_STATE"],
         "T_TOTAL" : T_TOTAL,
         "IACC_Z" : params["IACC_Z"],
         "IACC_Y" : params["IACC_Y"],
@@ -105,10 +125,14 @@ def main_plot_data():
 def map_plot_data():
 
     params = processing()
-
+    if (len(params['TEAM_ID'])):
+        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] for i in range (len(params['TEAM_ID']))]
+    else:
+        T_TOTAL = 0
     data = {
+        "T_TOTAL" : T_TOTAL,
         "GPS_LAT" : params["GPS_LAT"],
-        "GPS_LONG" : params["GPS_LONG"],
+        "GPS_LNG" : params["GPS_LNG"],
     }
 
     return data 
@@ -116,14 +140,17 @@ def map_plot_data():
 def display_data():
 
     params = processing()
-    T_TOTAL = ":".join([str(params["T_HOUR"][-1]), str(params["T_MIN"][-1]), str(params["T_SEC"][-1])])
+    try:
+        T_TOTAL = ":".join([str(params["T_HOUR"][-1]), str(params["T_MIN"][-1]), str(params["T_SEC"][-1])])
+    except:
+        T_TOTAL = '00:00:00'
 
     data = {
-        "TEAM_ID" : params["TEAM_ID"][-1],
-        "PKT_CNT" : params["PKT_CNT"][-1],
+        "TEAM_ID" : params["TEAM_ID"],
+        "PKT_CNT" : params["PKT_CNT"],
         "T_TOTAL" : T_TOTAL,
-        "CUR_STATE" : params["CUR_STATE"][-1],
-        "GPS_STATUS" : params["GPS_STATUS"][-1],
+        "CUR_STATE" : params["CUR_STATE"],
+        "GPS_STATUS" : params["GPS_STATUS"],
     }
 
     return data

@@ -9,7 +9,6 @@ def display(request):
 def main_plot(request):
 
     context = main_plot_data()
-    print(context)
     return render(request, 'core/main_plot.html', context)
 
 def map_plot(request):

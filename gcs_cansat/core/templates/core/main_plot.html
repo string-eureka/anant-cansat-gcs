@@ -7,22 +7,77 @@
 
 <div class="container-wrapper">
     <div class="left-container">
-        <div style="text-align: center;">
-            <h2>Packets</h2>
-            <p>{{PKT_CNT}}</p>
-            <h2>Time</h2>
-            <p>{{T_TOTAL}}</p>
-            <h2>Flight  State</h2>
-            <p>{{CUR_STATE}}</p>
-        
-            <button id="startButton" onclick="location.href='{% url 'main-plot' %}'">Toggle Plotting</button>
-        </div>
+        <table class="table table-borderless">
+            <tbody>
+                <tr>
+                    <td>Team ID</td>
+                    <td><span class="rounded-box">026</span></td>
+                </tr>
+                <tr>
+                    <td>Time Elapsed</td>
+                    <td><span class="rounded-box">{{T_TOTAL|last}}</span></td>
+                </tr>
+                <tr>
+                    <td>Packet Count</td>
+                    <td><span class="rounded-box">{{PKT_CNT|last}}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button id="startButton" class="btn btn-primary" onclick="location.href='{% url 'main-plot' %}'">Start Plotting</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Boot Mode</td>
+                    <td>{% if CUR_STATE|last > 0 %}{% if CUR_STATE|last > 0 %}<span class="dot">{% endif %}</span>{% endif %}</span></td>
+                </tr>
+                <tr>
+                    <td>Launchpad Mode</td>
+                    <td>{% if CUR_STATE|last > 1 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Test Mode</td>
+                    <td>{% if CUR_STATE|last > 2 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Ascent Mode</td>
+                    <td>{% if CUR_STATE|last > 3 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Deployment Mode</td>
+                    <td>{% if CUR_STATE|last > 4 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Descent Mode</td>
+                    <td>{% if CUR_STATE|last > 5 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Aerobrake Mode</td>
+                    <td>{% if CUR_STATE|last > 6 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Impact Mode</td>
+                    <td>{% if CUR_STATE|last > 7 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Touchdown Mode</td>
+                    <td>{% if CUR_STATE|last > 8 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Unknown Mode</td>
+                    <td>{% if CUR_STATE|last == 0 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    
+     
     <div class="right-container">
+        <div class="big-chart-row">
+            <div class="big-chart-col">
+                <canvas id="accelChart" class="big-chart"></canvas>
+            </div>
+        </div>
         <div class="chart-row">
             <div class="chart-col ">
-                <div class="chartAreaWrappers"></div>
                 <canvas id="altitudeChart" class="chart"></canvas>
             </div>
             <div class="chart-col">
@@ -31,22 +86,17 @@
         </div>
         <div class="chart-row">
             <div class="chart-col">
-                <canvas id="accelChart" class="chart"></canvas>
+                <canvas id="gnssChart" class="chart"></canvas>
             </div>
             <div class="chart-col">
                 <canvas id="voltageChart" class="chart"></canvas>
             </div>
         </div>
-        <div class="chart-row">
-            <div class="chart-col">
-                <canvas id="gnssChart" class="chart"></canvas>
-            </div>
-
-        </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>  
     document.addEventListener('DOMContentLoaded', function () {
         var altitudeCtx = document.getElementById('altitudeChart').getContext('2d');

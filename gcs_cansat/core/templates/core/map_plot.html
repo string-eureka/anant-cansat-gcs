@@ -1,0 +1,111 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<p id="refresh-timer"></p>
+<script src = "{% static 'core/refresh.js' %}"></script>
+
+<div class="container-wrapper">
+    <div class="left-container">
+        <table class="table table-borderless">
+            <tbody>
+                <tr>
+                    <td>Team ID</td>
+                    <td><span class="rounded-box">026</span></td>
+                </tr>
+                <tr>
+                    <td>Time Elapsed</td>
+                    <td><span class="rounded-box">{{T_TOTAL|last}}</span></td>
+                </tr>
+                <tr>
+                    <td>Packet Count</td>
+                    <td><span class="rounded-box">{{PKT_CNT|last}}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button id="startButton" class="btn btn-primary" onclick="location.href='{% url 'main-plot' %}'">Start Plotting</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Boot Mode</td>
+                    <td>{% if CUR_STATE|last > 0 %}{% if CUR_STATE|last > 0 %}<span class="dot">{% endif %}</span>{% endif %}</span></td>
+                </tr>
+                <tr>
+                    <td>Launchpad Mode</td>
+                    <td>{% if CUR_STATE|last > 1 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Test Mode</td>
+                    <td>{% if CUR_STATE|last > 2 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Ascent Mode</td>
+                    <td>{% if CUR_STATE|last > 3 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Deployment Mode</td>
+                    <td>{% if CUR_STATE|last > 4 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Descent Mode</td>
+                    <td>{% if CUR_STATE|last > 5 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Aerobrake Mode</td>
+                    <td>{% if CUR_STATE|last > 6 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Impact Mode</td>
+                    <td>{% if CUR_STATE|last > 7 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Touchdown Mode</td>
+                    <td>{% if CUR_STATE|last > 8 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+                <tr>
+                    <td>Unknown Mode</td>
+                    <td>{% if CUR_STATE|last == 0 %}<span class="dot">{% endif %}</span></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+     
+    <div class="right-container">
+        <div class="big-chart-row">
+            <div class="big-chart-col">
+                <canvas id="accelChart" class="big-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>  
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var accelCtx = document.getElementById('accelChart').getContext('2d');
+        var accelChart = new Chart(accelCtx, {
+                        type: 'line',
+            options: {
+                animation: {
+                    duration: 0
+            }
+        },
+            data: {
+                labels: {{ GPS_LNG|safe }},
+                datasets: [{
+                    label: 'Accelerometer X',
+                    data: {{ GPS_LAT|safe }},
+                    borderColor: 'red',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            }
+        });
+
+        
+
+    });
+</script>
+
+{% endblock %}
