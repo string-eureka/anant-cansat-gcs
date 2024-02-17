@@ -24,14 +24,27 @@
 
 <script>  
     document.addEventListener('DOMContentLoaded', function () {
+
         var altitudeCtx = document.getElementById('altitudeChart').getContext('2d');
         var altitudeChart = new Chart(altitudeCtx, {
                         type: 'line',
             options: {
                 animation: {
                     duration: 0
+            },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white'
+                }
+            },
+            y: {
+                ticks: {
+                    color: 'white' 
+                }
             }
-        },
+        }
+    },
             data: {
                 labels: {{ T_TOTAL|safe }},
                 datasets: [{
@@ -50,8 +63,20 @@
             options: {
                 animation: {
                     duration: 0
+            },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white'
+                }
+            },
+            y: {
+                ticks: {
+                    color: 'white' 
+                }
             }
-        },
+        }
+    },
             data: {
                 labels: {{ T_TOTAL|safe }},
                 datasets: [{
@@ -70,8 +95,20 @@
             options: {
                 animation: {
                     duration: 0
+            },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white'
+                }
+            },
+            y: {
+                ticks: {
+                    color: 'white' 
+                }
             }
-        },
+        }
+    },
             data: {
                 labels: {{ T_TOTAL|safe }},
                 datasets: [{
@@ -101,9 +138,20 @@
                         type: 'line',
             options: {
                 animation: {
-                    duration: 0
+                    duration: 0},
+            scales: {
+            x: {
+                ticks: {
+                    color: 'white'
+                }
+            },
+            y: {
+                ticks: {
+                    color: 'white' 
+                }
             }
-        },
+        }
+    },
             data: {
                 labels: {{ T_TOTAL|safe }},
                 datasets: [{
@@ -122,8 +170,20 @@
             options: {
                 animation: {
                     duration: 0
+            },
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white'
+                }
+            },
+            y: {
+                ticks: {
+                    color: 'white' 
+                }
             }
-        },
+        }
+    },
             data: {
                 labels: {{ T_TOTAL|safe }},
                 datasets: [{

@@ -28,7 +28,7 @@
 def processing():
 
     try:
-        file = open('../backup.txt','r')
+        file = open('../backup.csv','r')
     except Exception as e:
         print(e)
 
@@ -89,14 +89,15 @@ def main_plot_data():
     params = processing()
 
     if (len(params['TEAM_ID'])):
-
         T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
-        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST for i in range (len(params['TEAM_ID']))]
+        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST + 1 for i in range (len(params['TEAM_ID']))]
         GPS_LAT = [str(params["GPS_LAT"][i])[:4] for i in range(len(params['TEAM_ID']))]
         GPS_LNG = [str(params["GPS_LNG"][i])[:4] for i in range(len(params['TEAM_ID']))]
     else:
         T_TOTAL = [0]
-    
+        GPS_LAT = ["0.00"]
+        GPS_LNG = ["0.00"]
+
     data = {
         "T_TOTAL" : T_TOTAL,
         "PKT_CNT" : params["PKT_CNT"],
@@ -114,35 +115,19 @@ def main_plot_data():
 
     return data
 
-def map_plot_data():
-
-    params = processing()
-
-    if (len(params['TEAM_ID'])):
-
-        T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
-        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST for i in range (len(params['TEAM_ID']))]
-    else:
-        
-        T_TOTAL = [0]
-    data = {
-        "T_TOTAL" : T_TOTAL,
-        "GPS_LAT" : params["GPS_LAT"],
-        "GPS_LNG" : params["GPS_LNG"],
-    }
-
-    return data 
-
 def display_data():
 
     params = processing()
-    if (len(params['TEAM_ID'])):
 
+    if (len(params['TEAM_ID'])):
         T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
-        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST for i in range (len(params['TEAM_ID']))]
-    
+        T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] - T_FIRST + 1 for i in range (len(params['TEAM_ID']))]
+        GPS_LAT = [str(params["GPS_LAT"][i])[:4] for i in range(len(params['TEAM_ID']))]
+        GPS_LNG = [str(params["GPS_LNG"][i])[:4] for i in range(len(params['TEAM_ID']))]
     else:
         T_TOTAL = [0]
+        GPS_LAT = ["0.00"]
+        GPS_LNG = ["0.00"]
 
     # if (len(params['TEAM_ID'])):
 
@@ -155,8 +140,8 @@ def display_data():
         "PKT_CNT" : params["PKT_CNT"],
         "T_TOTAL" : T_TOTAL,
         "CUR_STATE" : params["CUR_STATE"],
-        "GPS_LAT" : params["GPS_LAT"],
-        "GPS_LNG" : params ["GPS_LNG"],
+        "GPS_LAT" : GPS_LAT,
+        "GPS_LNG" : GPS_LNG,
         "GPS_STATUS" : params["GPS_STATUS"],
     }
 

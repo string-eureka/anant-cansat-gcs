@@ -1,7 +1,7 @@
 import time
 import random
 
-file = "backup.txt"
+file = "backup.csv"
 
 T_SEC=T_MIN=T_HOUR=PKT_CNT=0
 TEAM_ID = '026'
