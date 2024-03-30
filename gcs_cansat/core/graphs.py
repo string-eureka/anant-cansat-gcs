@@ -74,6 +74,7 @@ def processing():
                         except:
                             params[i].append(j)
             else:
+                continue
                 for i in params:
                     try:
                         params[i].append(params[i][-1])
