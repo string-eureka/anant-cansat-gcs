@@ -17,6 +17,10 @@ def main_API(request):
     context = main_plot_data()
     return JsonResponse(context)
 
+def base_API(request):
+    
+    context - display_data()
+    return JsonResponse(context)
   
 
 

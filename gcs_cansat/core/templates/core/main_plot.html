@@ -1,5 +1,114 @@
-{% extends 'core/base.html' %}
-{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Anant Ground Console Station</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #000;
+            color: #00ff00;
+        }
+
+        .navbar {
+            background-color: #00ff00;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .left-container {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .right-container {
+            flex: 3;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            color: #00ff00;
+            margin-bottom: 20px;
+        }
+
+        table td {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .rounded-box {
+            border-radius: 5px;
+            background-color: #500658fb;
+            padding: 5px 10px;
+        }
+
+        #startButton {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light justify-content-center myFirstFont">
+        <a class="navbar-brand " href="#"><strong> Anant CanSAT Ground Console Station</strong></a>
+    </nav>
+    
+    <div class="container">
+        <div class="left-container">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Team ID</td>
+                        <td><span class="rounded-box" id="teamID">026</span></td>
+                    </tr>
+                    <tr>
+                        <td>Time Elapsed</td>
+                        <td><span class="rounded-box" id="timeElapsed">{{T_TOTAL|last}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Packet Count</td>
+                        <td><span class="rounded-box" id="packetCount">{{PKT_CNT|last}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Operating Mode</td>
+                        <td><span class="rounded-box" id="operatingMode">{{CUR_STATE|last}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Latitude</td>
+                        <td><span class="rounded-box" id="latitude">{{GPS_LAT|last}} ° N </span></td>
+                    </tr>
+                    <tr>
+                        <td>Longitude</td>
+                        <td><span class="rounded-box" id="longitude">{{GPS_LNG|last}} ° E</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <button id="startButton" class="btn btn-primary"
+                                onclick="location.href='{% url 'main-plot' %}'">Start Plotting</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <img src="{% static 'core/logo.png' %}" alt="Team Anant Logo" style="width: 100%;">
+        </div>
+
+        <div class="right-container">
     <div class="row">
         <div class="col-md-12">
             <canvas id="altitudeChart" class="line-chart"></canvas>
@@ -232,5 +341,31 @@
         }, 250);
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        setInterval(updateLeftContainerValues, 250);
+    });
 
-{% endblock %}
+    function updateLeftContainerValues() {
+        $.getJSON("/main-api/", function (response, status) {
+            $("#timeElapsed").text(response.T_TOTAL.slice(-1)[0]);
+            $("#packetCount").text(response.PKT_CNT.slice(-1)[0]);
+            $("#latitude").text(response.GPS_LAT.slice(-1)[0] + " ° N");
+            $("#longitude").text(response.GPS_LNG.slice(-1)[0] + " ° E");
+        });
+    }
+</script>
+
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+
+</html>
