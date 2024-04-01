@@ -75,11 +75,11 @@ def processing():
                             params[i].append(j)
             else:
                 continue
-                for i in params:
-                    try:
-                        params[i].append(params[i][-1])
-                    except:
-                        pass   
+                # for i in params:
+                #     try:
+                #         params[i].append(params[i][-1])
+                #     except:
+                #         pass   
 
     file.close()
 
@@ -98,6 +98,7 @@ def main_plot_data():
         T_TOTAL = [0]
         GPS_LAT = ["0.00"]
         GPS_LNG = ["0.00"]
+
 
     data = {
         "T_TOTAL" : T_TOTAL,

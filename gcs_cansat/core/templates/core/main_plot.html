@@ -28,7 +28,7 @@
         var altitudeCtx = document.getElementById('altitudeChart').getContext('2d');
         var altitudeChart = new Chart(altitudeCtx, {
                         type: 'line',
-            options: {
+        options: {
                 animation: {
                     duration: 0
             },
@@ -40,13 +40,15 @@
             },
             y: {
                 ticks: {
-                    color: 'white' 
-                }
+                    color: 'white'
+                },
+                max : 1500,
+
             }
         }
     },
             data: {
-                labels: {{ T_TOTAL|safe }},
+                labels: {{ PKT_CNT|safe }},
                 datasets: [{
                     label: 'Altitude (m)',
                     data: {{ GAS_ALT|safe }},
@@ -78,7 +80,7 @@
         }
     },
             data: {
-                labels: {{ T_TOTAL|safe }},
+                labels: {{ PKT_CNT|safe }},
                 datasets: [{
                     label: 'Temperature (C)',
                     data: {{ GAS_TEMP|safe }},
@@ -110,7 +112,7 @@
         }
     },
             data: {
-                labels: {{ T_TOTAL|safe }},
+                labels: {{ PKT_CNT|safe }},
                 datasets: [{
                     label: 'Accelerometer X',
                     data: {{ IACC_X|safe }},
@@ -153,7 +155,7 @@
         }
     },
             data: {
-                labels: {{ T_TOTAL|safe }},
+                labels: {{ PKT_CNT|safe }},
                 datasets: [{
                     label: 'Pressure',
                     data: {{ GAS_PRS|safe }},
@@ -185,7 +187,7 @@
         }
     },
             data: {
-                labels: {{ T_TOTAL|safe }},
+                labels: {{ PKT_CNT|safe }},
                 datasets: [{
                     label: 'Magnetic Inertia (Z)',
                     data: {{ IMAG_Z|safe }},
@@ -200,23 +202,23 @@
         {
             const gap = Object.values(response)[0].length - altitudeChart.data.labels.length
             if (gap){
-                altitudeChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                altitudeChart.data.labels.push(response.PKT_CNT.slice(-gap));
                 altitudeChart.data.datasets[0].data.push(response.GAS_ALT.slice(-gap));
                 altitudeChart.update();
 
-                tempChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                tempChart.data.labels.push(response.PKT_CNT.slice(-gap));
                 tempChart.data.datasets[0].data.push(response.GAS_TEMP.slice(-gap));
                 tempChart.update();
 
-                imagChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                imagChart.data.labels.push(response.PKT_CNT.slice(-gap));
                 imagChart.data.datasets[0].data.push(response.IMAG_Z.slice(-gap));
                 imagChart.update();
 
-                pressureChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                pressureChart.data.labels.push(response.PKT_CNT.slice(-gap));
                 pressureChart.data.datasets[0].data.push(response.GAS_PRS.slice(-gap));
                 pressureChart.update();
 
-                accelChart.data.labels.push(response.T_TOTAL.slice(-gap));
+                accelChart.data.labels.push(response.PKT_CNT.slice(-gap));
                 accelChart.data.datasets[0].data.push(response.IACC_X.slice(-gap));
                 accelChart.data.datasets[1].data.push(response.IACC_Y.slice(-gap));
                 accelChart.data.datasets[2].data.push(response.IACC_Z.slice(-gap));

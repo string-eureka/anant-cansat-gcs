@@ -65,7 +65,6 @@
 </head>
 
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-light justify-content-center myFirstFont">
         <a class="navbar-brand " href="#"><strong> Anant CanSAT Ground Console Station</strong></a>
     </nav>
@@ -76,27 +75,27 @@
                 <tbody>
                     <tr>
                         <td>Team ID</td>
-                        <td><span class="rounded-box">026</span></td>
+                        <td><span class="rounded-box" id="teamID">026</span></td>
                     </tr>
                     <tr>
                         <td>Time Elapsed</td>
-                        <td><span class="rounded-box">{{T_TOTAL|last}}</span></td>
+                        <td><span class="rounded-box" id="timeElapsed">{{T_TOTAL|last}}</span></td>
                     </tr>
                     <tr>
                         <td>Packet Count</td>
-                        <td><span class="rounded-box">{{PKT_CNT|last}}</span></td>
+                        <td><span class="rounded-box" id="packetCount">{{PKT_CNT|last}}</span></td>
                     </tr>
                     <tr>
                         <td>Operating Mode</td>
-                        <td><span class="rounded-box">{{CUR_STATE|last}}</span></td>
+                        <td><span class="rounded-box" id="operatingMode">{{CUR_STATE|last}}</span></td>
                     </tr>
                     <tr>
                         <td>Latitude</td>
-                        <td><span class="rounded-box">{{GPS_LAT|last}} ° N </span></td>
+                        <td><span class="rounded-box" id="latitude">{{GPS_LAT|last}} ° N </span></td>
                     </tr>
                     <tr>
                         <td>Longitude</td>
-                        <td><span class="rounded-box">{{GPS_LNG|last}} ° E</span></td>
+                        <td><span class="rounded-box" id="longitude">{{GPS_LNG|last}} ° E</span></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center;">
@@ -113,6 +112,7 @@
             {% block content %}{% endblock %}
         </div>
     </div>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
