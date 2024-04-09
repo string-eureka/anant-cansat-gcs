@@ -107,30 +107,37 @@
             </table>
             <img src="{% static 'core/logo.png' %}" alt="Team Anant Logo" style="width: 100%;">
         </div>
-
+        
         <div class="right-container">
-    <div class="row">
-        <div class="col-md-12">
-            <canvas id="altitudeChart" class="line-chart"></canvas>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <canvas id="accelChart" class="line-chart"></canvas>
-        </div>
-        <div class="col-md-6">
-            <canvas id="tempChart" class="line-chart"></canvas>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <canvas id="imagChart" class="line-chart"></canvas>
-        </div>
-        <div class="col-md-6">
-            <canvas id="pressureChart" class="line-chart"></canvas>
+            <div class="row">
+                <div class="col-md-12">
+                    <canvas id="altitudeChart" class="line-chart"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <canvas id="accelChart" class="line-chart"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="tempChart" class="line-chart"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <canvas id="imagChart" class="line-chart"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="pressureChart" class="line-chart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
+<script>
+    setTimeout(function(){
+    window.location.reload(1);
+    }, 20000);
+</script>   
 <script>  
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -151,7 +158,8 @@
                 ticks: {
                     color: 'white'
                 },
-                max : 1500,
+                max : 20,
+                min : -5,
 
             }
         }
@@ -338,9 +346,10 @@
             }
             
         });
-        }, 250);
+        }, 1000);
     });
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         setInterval(updateLeftContainerValues, 250);
@@ -356,16 +365,11 @@
     }
 </script>
 
-        </div>
-    </div>
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 
 </html>

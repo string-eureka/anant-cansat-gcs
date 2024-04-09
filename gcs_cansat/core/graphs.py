@@ -28,9 +28,9 @@
 def processing():
 
     try:
-        file = open('../backup.csv','r')
+        file = open(r'C:\Users\ishan\OneDrive\Desktop\xbee_drop_5.txt')
     except Exception as e:
-        print(e)
+        file = open('../backup.csv','r')
 
     TEAM_ID, PKT_CNT, T_HOUR, T_MIN, T_SEC, GAS_ALT, CUR_STATE, ESP_TIME, IACC_Z, GPS_STATUS, GPS_LAT, GPS_LNG, GPS_HR, GPS_MIN, GPS_SEC, IACC_X, IACC_Y, IMAG_X, IMAG_Y, IMAG_Z, GAS_PRS, GAS_TEMP, GPS_ALT, CHECKSUM = [[] for _ in range (24)]  
 
@@ -60,7 +60,7 @@ def processing():
     "GPS_ALT": GPS_ALT,
     "CHECKSUM": CHECKSUM,
     }
-
+    
     for line in file:
         if len(line) > 1:
             values = line.split(',')
@@ -88,7 +88,6 @@ def processing():
 def main_plot_data():
 
     params = processing()
-
     if (len(params['TEAM_ID'])):
         T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
         T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST + 1 for i in range (len(params['TEAM_ID']))]
@@ -148,5 +147,3 @@ def display_data():
     }
 
     return data
-
-

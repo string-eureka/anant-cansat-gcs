@@ -19,7 +19,7 @@ def main_API(request):
 
 def base_API(request):
     
-    context - display_data()
+    context = display_data()
     return JsonResponse(context)
   
 
