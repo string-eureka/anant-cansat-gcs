@@ -24,6 +24,7 @@
     GPS_ALT: 
     CHECKSUM
 """
+from math import pow
 
 def processing():
 
@@ -91,14 +92,16 @@ def main_plot_data():
     if (len(params['TEAM_ID'])):
         T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
         T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST + 1 for i in range (len(params['TEAM_ID']))]
+        D_CURRENT = pow(((params["GPS_LAT"][-1]-params["GPS_LAT"][0]) ** 2) + ((params["GPS_LNG"][-1]-params["GPS_LNG"][0]) ** 2),0.5)
         GPS_LAT = [str(params["GPS_LAT"][i])[:4] for i in range(len(params['TEAM_ID']))]
         GPS_LNG = [str(params["GPS_LNG"][i])[:4] for i in range(len(params['TEAM_ID']))]
     else:
         T_TOTAL = [0]
         GPS_LAT = ["0.00"]
         GPS_LNG = ["0.00"]
+        D_CURRENT = 0
 
-
+    distance = [str(params["GPS_LNG"][i]) for i in range(len(params['TEAM_ID']))]
     data = {
         "T_TOTAL" : T_TOTAL,
         "PKT_CNT" : params["PKT_CNT"],
@@ -112,6 +115,7 @@ def main_plot_data():
         "GAS_TEMP" : params["GAS_TEMP"],
         "GPS_LAT" : GPS_LAT,
         "GPS_LNG" : GPS_LNG,
+        "D_CURRENT" : D_CURRENT,
     }
 
     return data
@@ -123,12 +127,14 @@ def display_data():
     if (len(params['TEAM_ID'])):
         T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
         T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] - T_FIRST + 1 for i in range (len(params['TEAM_ID']))]
+        D_CURRENT = pow(((params["GPS_LAT"][-1]-params["GPS_LAT"][0]) ** 2) + ((params["GPS_LNG"][-1]-params["GPS_LNG"][0]) ** 2),0.5)
         GPS_LAT = [str(params["GPS_LAT"][i])[:4] for i in range(len(params['TEAM_ID']))]
         GPS_LNG = [str(params["GPS_LNG"][i])[:4] for i in range(len(params['TEAM_ID']))]
     else:
         T_TOTAL = [0]
         GPS_LAT = ["0.00"]
         GPS_LNG = ["0.00"]
+        D_CURRENT =  0
 
     # if (len(params['TEAM_ID'])):
 
@@ -144,6 +150,7 @@ def display_data():
         "GPS_LAT" : GPS_LAT,
         "GPS_LNG" : GPS_LNG,
         "GPS_STATUS" : params["GPS_STATUS"],
+        "D_CURRENT" : D_CURRENT,
     }
 
     return data

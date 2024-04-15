@@ -11,12 +11,12 @@
 
     <style>
         body {
-            background-color: #000;
-            color: #00ff00;
+            background-color: #202124;
+            color: #54b254;
         }
 
         .navbar {
-            background-color: #00ff00;
+            background-color: #0ab60a;
             text-align: center;
         }
 
@@ -96,6 +96,10 @@
                     <tr>
                         <td>Longitude</td>
                         <td><span class="rounded-box" id="longitude">{{GPS_LNG|last}} ° E</span></td>
+                    </tr>
+                    <tr>
+                        <td>Distance Travelled</td>
+                        <td><span class="rounded-box" id = "distance">{{D_CURRENT}}</td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: center;">

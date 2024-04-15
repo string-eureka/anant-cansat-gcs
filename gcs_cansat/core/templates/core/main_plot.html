@@ -11,12 +11,12 @@
 
     <style>
         body {
-            background-color: #000;
-            color: #00ff00;
+            background-color: #18191b;
+            color: #54b254;
         }
 
         .navbar {
-            background-color: #00ff00;
+            background-color: #0ab60a;
             text-align: center;
         }
 
@@ -98,6 +98,10 @@
                         <td><span class="rounded-box" id="longitude">{{GPS_LNG|last}} ° E</span></td>
                     </tr>
                     <tr>
+                        <td>Distance Travelled</td>
+                        <td><span class="rounded-box" id = "distance">{{D_CURRENT}}</td>
+                    </tr>
+                    <tr>
                         <td colspan="2" style="text-align: center;">
                             <button id="startButton" class="btn btn-primary"
                                 onclick="location.href='{% url 'main-plot' %}'">Start Plotting</button>
@@ -136,7 +140,7 @@
 <script>
     setTimeout(function(){
     window.location.reload(1);
-    }, 20000);
+    }, 7000);
 </script>   
 <script>  
     document.addEventListener('DOMContentLoaded', function () {
@@ -346,7 +350,7 @@
             }
             
         });
-        }, 1000);
+        }, 250);
     });
 </script>
 
@@ -361,6 +365,8 @@
             $("#packetCount").text(response.PKT_CNT.slice(-1)[0]);
             $("#latitude").text(response.GPS_LAT.slice(-1)[0] + " ° N");
             $("#longitude").text(response.GPS_LNG.slice(-1)[0] + " ° E");
+            $("#distance").text(response.D_CURRENT);
+
         });
     }
 </script>
