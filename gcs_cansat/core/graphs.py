@@ -92,7 +92,7 @@ def main_plot_data():
     if (len(params['TEAM_ID'])):
         T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
         T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] -T_FIRST + 1 for i in range (len(params['TEAM_ID']))]
-        D_CURRENT = pow(((params["GPS_LAT"][-1]-params["GPS_LAT"][0]) ** 2) + ((params["GPS_LNG"][-1]-params["GPS_LNG"][0]) ** 2),0.5)
+        D_CURRENT = str(pow(((params["GPS_LAT"][-1]-params["GPS_LAT"][0]) ** 2) + ((params["GPS_LNG"][-1]-params["GPS_LNG"][0]) ** 2),0.5))[:6]
         GPS_LAT = [str(params["GPS_LAT"][i])[:4] for i in range(len(params['TEAM_ID']))]
         GPS_LNG = [str(params["GPS_LNG"][i])[:4] for i in range(len(params['TEAM_ID']))]
     else:
@@ -127,7 +127,7 @@ def display_data():
     if (len(params['TEAM_ID'])):
         T_FIRST = params["T_HOUR"][0] * 3600 + params["T_MIN"][0] * 60 + params["T_SEC"][0]
         T_TOTAL = [params["T_HOUR"][i] * 3600 + params["T_MIN"][i] * 60 + params["T_SEC"][i] - T_FIRST + 1 for i in range (len(params['TEAM_ID']))]
-        D_CURRENT = pow(((params["GPS_LAT"][-1]-params["GPS_LAT"][0]) ** 2) + ((params["GPS_LNG"][-1]-params["GPS_LNG"][0]) ** 2),0.5)
+        D_CURRENT = str(pow(((params["GPS_LAT"][-1]-params["GPS_LAT"][0]) ** 2) + ((params["GPS_LNG"][-1]-params["GPS_LNG"][0]) ** 2),0.5))[:6]
         GPS_LAT = [str(params["GPS_LAT"][i])[:4] for i in range(len(params['TEAM_ID']))]
         GPS_LNG = [str(params["GPS_LNG"][i])[:4] for i in range(len(params['TEAM_ID']))]
     else:
@@ -154,3 +154,4 @@ def display_data():
     }
 
     return data
+

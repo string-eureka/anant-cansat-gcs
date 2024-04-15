@@ -121,151 +121,30 @@
         <div class="right-container">
             <div class="row">
                 <div class="col-md-12">
-                    <canvas id="altitudeChart" class="line-chart"></canvas>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <canvas id="accelChart" class="line-chart"></canvas>
-                </div>
-                <div class="col-md-6">
-                    <canvas id="tempChart" class="line-chart"></canvas>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <canvas id="imagChart" class="line-chart"></canvas>
-                </div>
-                <div class="col-md-6">
                     <canvas id="pressureChart" class="line-chart"></canvas>
                 </div>
+            </div>
             </div>
         </div>
     </div>
 
-<script>
+<!-- <script>
     setTimeout(function(){
     window.location.reload(1);
     }, 7000);
-</script>   
+</script>    -->
 <script>  
     document.addEventListener('DOMContentLoaded', function () {
-
-        var altitudeCtx = document.getElementById('altitudeChart').getContext('2d');
-        var altitudeChart = new Chart(altitudeCtx, {
-                        type: 'line',
-        options: {
-                animation: {
-                    duration: 0
-            },
-        scales: {
-            x: {
-                ticks: {
-                    color: 'white'
-                }
-            },
-            y: {
-                ticks: {
-                    color: 'white'
-                },
-                max : 20,
-                min : -5,
-
-            }
-        }
-    },
-            data: {
-                labels: {{ PKT_CNT|safe }},
-                datasets: [{
-                    label: 'Altitude (m)',
-                    data: {{ GAS_ALT|safe }},
-                    borderColor: 'blue',
-                    borderWidth: 1,
-                    fill: false
-                }]
-            }
-        });
-
-        var tempCtx = document.getElementById('tempChart').getContext('2d');
-        var tempChart = new Chart(tempCtx, {
-                        type: 'line',
-            options: {
-                animation: {
-                    duration: 0
-            },
-        scales: {
-            x: {
-                ticks: {
-                    color: 'white'
-                }
-            },
-            y: {
-                ticks: {
-                    color: 'white' 
-                }
-            }
-        }
-    },
-            data: {
-                labels: {{ PKT_CNT|safe }},
-                datasets: [{
-                    label: 'Temperature (C)',
-                    data: {{ GAS_TEMP|safe }},
-                    borderColor: 'green',
-                    borderWidth: 1,
-                    fill: false
-                }]
-            }
-        });
-
-        var accelCtx = document.getElementById('accelChart').getContext('2d');
-        var accelChart = new Chart(accelCtx, {
-                        type: 'line',
-            options: {
-                animation: {
-                    duration: 0
-            },
-        scales: {
-            x: {
-                ticks: {
-                    color: 'white'
-                }
-            },
-            y: {
-                ticks: {
-                    color: 'white' 
-                }
-            }
-        }
-    },
-            data: {
-                labels: {{ PKT_CNT|safe }},
-                datasets: [{
-                    label: 'Accelerometer X',
-                    data: {{ IACC_X|safe }},
-                    borderColor: 'red',
-                    borderWidth: 1,
-                    fill: false
-                },{
-                    label: 'Accelerometer Y',
-                    data: {{ IACC_Y|safe }},
-                    borderColor: 'blue',
-                    borderWidth: 1,
-                    fill: false
-                },{
-                    label: 'Accelerometer Z',
-                    data: {{ IACC_Z|safe }},
-                    borderColor: 'green',
-                    borderWidth: 1,
-                    fill: false
-                }]
-            }
-        });
 
         var pressureCtx = document.getElementById('pressureChart').getContext('2d');
         var pressureChart = new Chart(pressureCtx, {
                         type: 'line',
             options: {
+                plugins: {
+                    legend: {
+                    display: false
+                    }
+            },
                 animation: {
                     duration: 0},
             scales: {
@@ -282,43 +161,10 @@
         }
     },
             data: {
-                labels: {{ PKT_CNT|safe }},
+                labels: {{ GPS_LAT|safe }},
                 datasets: [{
-                    label: 'Pressure',
-                    data: {{ GAS_PRS|safe }},
-                    borderColor: 'purple',
-                    borderWidth: 1,
-                    fill: false
-                }]
-            }
-        });
-
-        var imagCtx = document.getElementById('imagChart').getContext('2d');
-        var imagChart = new Chart(imagCtx, {
-                        type: 'line',
-            options: {
-                animation: {
-                    duration: 0
-            },
-        scales: {
-            x: {
-                ticks: {
-                    color: 'white'
-                }
-            },
-            y: {
-                ticks: {
-                    color: 'white' 
-                }
-            }
-        }
-    },
-            data: {
-                labels: {{ PKT_CNT|safe }},
-                datasets: [{
-                    label: 'Magnetic Inertia (Z)',
-                    data: {{ IMAG_Z|safe }},
-                    borderColor: 'orange',
+                    data: {{ GPS_LNG|safe }},
+                    borderColor: 'blue',
                     borderWidth: 1,
                     fill: false
                 }]
@@ -327,31 +173,12 @@
     setInterval(function(){
         jQuery.getJSON("/main-api/", function(response, status)
         {
-            const gap = Object.values(response)[0].length - altitudeChart.data.labels.length
+            const gap = Object.values(response)[0].length - pressureChart.data.labels.length
             if (gap){
-                altitudeChart.data.labels.push(response.PKT_CNT.slice(-gap));
-                altitudeChart.data.datasets[0].data.push(response.GAS_ALT.slice(-gap));
-                altitudeChart.update();
-
-                tempChart.data.labels.push(response.PKT_CNT.slice(-gap));
-                tempChart.data.datasets[0].data.push(response.GAS_TEMP.slice(-gap));
-                tempChart.update();
-
-                imagChart.data.labels.push(response.PKT_CNT.slice(-gap));
-                imagChart.data.datasets[0].data.push(response.IMAG_Z.slice(-gap));
-                imagChart.update();
-
-                pressureChart.data.labels.push(response.PKT_CNT.slice(-gap));
-                pressureChart.data.datasets[0].data.push(response.GAS_PRS.slice(-gap));
+                pressureChart.data.labels.push(response.GPS_LAT.slice(-gap));
+                console.log(gap);
+                pressureChart.data.datasets[0].data=(response.GPS_LNG);
                 pressureChart.update();
-
-                accelChart.data.labels.push(response.PKT_CNT.slice(-gap));
-                accelChart.data.datasets[0].data.push(response.IACC_X.slice(-gap));
-                accelChart.data.datasets[1].data.push(response.IACC_Y.slice(-gap));
-                accelChart.data.datasets[2].data.push(response.IACC_Z.slice(-gap));
-
-                accelChart.update();
-
 
             }
             
@@ -383,5 +210,4 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
-
 </html>

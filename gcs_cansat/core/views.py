@@ -17,10 +17,10 @@ def main_API(request):
     context = main_plot_data()
     return JsonResponse(context)
 
-def base_API(request):
+def map_plot(request):
     
-    context = display_data()
-    return JsonResponse(context)
+    context = main_plot_data()
+    return render(request, 'core/map_plot.html', context)
   
 
 
