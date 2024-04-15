@@ -25,6 +25,7 @@
     CHECKSUM
 """
 from math import pow
+import gmplot
 
 def processing():
 
@@ -155,3 +156,15 @@ def display_data():
 
     return data
 
+def new_map():
+    
+    params = processing()
+    lats = params["GPS_LAT"]
+    lng = params["GPS_LNG"]
+    gmap = gmplot.GoogleMapPlotter(sum(lats)/len(lats), sum(lng)/len(lng), 13)
+    gmap.scatter(lats, lng, '#39FF14', size=50, marker=False)
+    gmap.plot(lats, lng, 'yellow', edge_width=2.5)
+    gmap.draw("core/templates/core/map.html")
+    # gmap = gmplot.GoogleMapPlotter(sum(lats)/len(lats), sum(lng)/len(lng), 13)
+    # gmap.scatter(lats, lng, '#39FF14', size=1, marker=False)
+    # gmap.draw("/Users/aadityagoel/Downloads/IND_rds/my_map.html")
