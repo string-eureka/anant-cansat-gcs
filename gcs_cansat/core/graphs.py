@@ -68,15 +68,15 @@ def processing():
         if len(line) > 1:
             values = line.split(',')
             if len(values) == 24:
-                try:
-                    tl= [0,1,2,3,4,10,11,-1]
-                    for i in tl:
-                        if not float(values[i]) % 1:
-                            tvar = int(values[i])
-                        else:
-                            tvar = float(values[i])
-                except:
-                    continue
+                # try:
+                #     tl= [0,1,2,3,4,10,11,-1]
+                #     for i in tl:
+                #         if not float(values[i]) % 1:
+                #             tvar = int(values[i])
+                #         else:
+                #             tvar = float(values[i])
+                # except:
+                #     continue
                 for i,j in zip(params,values):
                         try:
                             if not float(j) % 1:
